@@ -5,7 +5,7 @@ import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles(theme => ({
   formLockup: {
-    backgroundColor: '#eee'
+    
   },
   form: {
     display: 'flex',
