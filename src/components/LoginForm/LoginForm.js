@@ -1,7 +1,6 @@
 import React from "react";
 import "./LoginForm.css"
 
-
 const LoginForm = () => {
   const usernameInputRef = React.createRef();
   const passwordInputRef = React.createRef();
@@ -33,26 +32,21 @@ const LoginForm = () => {
 
   const handleSubmit = async (event) => {
     // Prevent page from reloading on submit
-    console.log('called');
     event.preventDefault();
     if (!checkEmptyFields()) {
       return;
     }
 
-    console.log('about to fetch');
     try {
       // Basic post request with fetch (Ideally have a generic fetch function in a separate file)
       let response = await fetch("/api/v1/login", {
-        method: 'post',
+        method: "post",
         body: JSON.stringify(userDetails)
       });
-      
-      console.log('json response is', response);
+
       // Parse the json response from json into an JS object
-      let result = response;
-      console.log('stringified response is ', JSON.stringify(result));
-      console.log('result is ', result);
-      if (result && result.ok) {
+      let result = await response.json();
+      if (result && result.status === 200) {
         setUserDetails({
           ...userDetails,
           isAuthenticated: true
@@ -61,7 +55,6 @@ const LoginForm = () => {
         throw new Error("Invalid response during authentication");
       }
     } catch(err) {
-      console.log('err occurred', err);
       // Alert on errors when we attempt to login
       alert("An error occurred when authenticating");
     }

@@ -1,22 +1,30 @@
 .form {
-    display: flex;
-    flex-flow: column nowrap;
-    align-items: center;
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+  font-family: sans-serif;
 }
 
 .inputLockup {
-    display: inline-block;
+  display: inline-block;
+  margin: 5px 0;
+}
+
+.inputLockup label {
+  margin-right: 10px;
 }
 
 .textField {
-    margin-top: 2em;
-    padding-left: 1em;
-    background: none;
-    border: none;
-    border-bottom: 1px solid black;
+  margin-top: 2em;
+  padding-left: 1em;
+  background: none;
+  border: none;
+  border-bottom: 1px solid black;
 }
 
 .button {
-    margin: 1em;
+  margin: 1em;
+  background: none;
+  padding: 5px 10px;
 }
 
