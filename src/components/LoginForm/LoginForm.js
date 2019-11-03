@@ -1,35 +1,8 @@
 import React from "react";
-import { makeStyles } from '@material-ui/core/styles';
-
-
-const useStyles = makeStyles(theme => ({
-  formLockup: {
-    
-  },
-  form: {
-    display: 'flex',
-    flexFlow: 'column nowrap',
-    alignItems: 'center',
-
-  },
-  inputLockup: {
-    display: 'inline-block'
-  },
-  textfield: {
-    marginTop: '2em',
-    paddingLeft: '1em',
-    background: 'none',
-    border: 'none',
-    borderBottom: '1px solid black'
-  },
-  button: {
-    margin: theme.spacing(1),
-  }
-}));
+import "./LoginForm.css"
 
 
 const LoginForm = () => {
-  const classes = useStyles();
   const usernameInputRef = React.createRef();
   const passwordInputRef = React.createRef();
 
@@ -57,61 +30,70 @@ const LoginForm = () => {
     }
     return true;
   }
+
   const handleSubmit = async (event) => {
     // Prevent page from reloading on submit
+    console.log('called');
     event.preventDefault();
     if (!checkEmptyFields()) {
       return;
     }
 
+    console.log('about to fetch');
     try {
       // Basic post request with fetch (Ideally have a generic fetch function in a separate file)
-      let jsonResponse = await fetch("/api/v1/login", {
+      let response = await fetch("/api/v1/login", {
         method: 'post',
         body: JSON.stringify(userDetails)
       });
       
+      console.log('json response is', response);
       // Parse the json response from json into an JS object
-      let result = await jsonResponse.json();
-      if (result) {
+      let result = response;
+      console.log('stringified response is ', JSON.stringify(result));
+      console.log('result is ', result);
+      if (result && result.ok) {
         setUserDetails({
           ...userDetails,
           isAuthenticated: true
         });
+      } else {
+        throw new Error("Invalid response during authentication");
       }
     } catch(err) {
+      console.log('err occurred', err);
       // Alert on errors when we attempt to login
       alert("An error occurred when authenticating");
     }
   }
 
   return (
-    <div className={classes.formLockup}>
-      <form className={classes.form} onSubmit={handleSubmit}>
+    <div className="formLockup">
+      <form className="form" onSubmit={handleSubmit}>
         <h2 variant="h2">Login Form</h2>
-        <div className={classes.inputLockup}>
+        <div className="inputLockup">
           <label htmlFor="username">Username</label>
           <input
             ref={usernameInputRef}
             type="text" 
             id="username" 
-            className={classes.textfield} 
+            className="textfield" 
             value={userDetails.username} 
             onChange={handleChange("username")} 
             />
         </div>
-        <div className={classes.inputLockup}>
+        <div className="inputLockup">
           <label htmlFor="password">Password</label>
           <input 
             ref={passwordInputRef}
             id="password"
             label="Password"
-            className={classes.textfield}
+            className="textfield"
             value={userDetails.password}
             onChange={handleChange("password")}
             />
         </div>
-        <button className={classes.button} type="submit">
+        <button className="button" type="submit">
           Submit
         </button>
       </form>

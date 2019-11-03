@@ -1,0 +1,22 @@
+.form {
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+}
+
+.inputLockup {
+    display: inline-block;
+}
+
+.textField {
+    margin-top: 2em;
+    padding-left: 1em;
+    background: none;
+    border: none;
+    border-bottom: 1px solid black;
+}
+
+.button {
+    margin: 1em;
+}
+

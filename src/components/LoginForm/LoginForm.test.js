@@ -10,7 +10,7 @@ describe("LoginForm", () => {
         jest.spyOn(window, "alert").mockImplementation();
         jest.spyOn(window, "fetch").mockResolvedValue("This is a response"); // TODO: Fix this
 
-        const { getByText, getByDisplayValue, getByLabelText } = render(<LoginForm />);
+        const { getByText, getByLabelText } = render(<LoginForm />);
         const loginBtn = getByText(/submit/i);
         await act(async () => fireEvent.click(loginBtn));
         
@@ -46,5 +46,23 @@ describe("LoginForm", () => {
 
         await act(async () => fireEvent.click(loginBtn));
         expect(getByLabelText(/name/i)).toHaveFocus();
+    });
+
+    it("should alert the user about incorrect details with an incorrect username or password", async () => {
+        const fetchResponse = {
+            message: "Incorrect details",
+            ok: true
+        };
+        const alertSpy = jest.spyOn(window, "alert").mockImplementation();
+        jest.spyOn(window, "fetch").mockResolvedValue(JSON.stringify(fetchResponse));
+        
+        const { getByText, getByLabelText } = render(<LoginForm />);
+        const loginBtn = getByText(/submit/i);
+        fireEvent.change(getByLabelText(/name/i), { target: { value: "stephen123" }});
+        fireEvent.change(getByLabelText(/password/i), { target: { value: "secure123" }});
+        
+
+        await act(async () => fireEvent.click(loginBtn));
+        expect(alertSpy).toHaveBeenCalledWith("An error occurred when authenticating");
     });
 });
