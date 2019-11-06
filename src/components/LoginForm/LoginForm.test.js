@@ -9,17 +9,17 @@ describe("LoginForm", () => {
     cleanup();
   });
 
-  it("should focus on then username field when clicking login without a username or password", async () => {
+  it("should focus on then username field when clicking login without a username or password", () => {
     jest.spyOn(window, "alert").mockImplementation();
 
     const { getByText, getByLabelText } = render(<LoginForm />);
     const loginBtn = getByText(/login/i);
+    
     fireEvent.click(loginBtn);
-
     expect(getByLabelText(/username/i)).toHaveFocus();
   });
 
-  it("should focus on password field when clicking login without a password", async () => {
+  it("should focus on password field when clicking login without a password", () => {
     jest.spyOn(window, "alert").mockImplementation();
 
     const { getByText, getByDisplayValue, getByLabelText } = render(<LoginForm />);
