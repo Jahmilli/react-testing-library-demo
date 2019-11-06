@@ -38,15 +38,8 @@ const LoginForm = () => {
     }
 
     try {
-      // Basic post request with fetch (Ideally have a generic fetch function in a separate file)
-      let response = await fetch("/api/v1/login", {
-        method: "post",
-        body: JSON.stringify(userDetails)
-      });
-
-      // Parse the json response from json into an JS object
-      let result = await response.json();
-      if (result && result.status === 200) {
+      if (userDetails.username === "username123" && 
+        userDetails.password === "secure123") {
         setUserDetails({
           ...userDetails,
           isAuthenticated: true
