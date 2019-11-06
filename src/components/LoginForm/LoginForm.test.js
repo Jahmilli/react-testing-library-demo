@@ -17,6 +17,7 @@ describe("LoginForm", () => {
     
     fireEvent.click(loginBtn);
     expect(getByLabelText(/username/i)).toHaveFocus();
+    expect(getByText("User has not logged in"));
   });
 
   it("should focus on password field when clicking login without a password", () => {
@@ -32,6 +33,7 @@ describe("LoginForm", () => {
     fireEvent.click(loginBtn);
     const passwordField = getByLabelText(/password/i);
     expect(passwordField).toHaveFocus();
+    expect(getByText("User has not logged in"));
   });
 
   it("should focus on username field when clicking login without a username", () => {
@@ -45,6 +47,7 @@ describe("LoginForm", () => {
 
     fireEvent.click(loginBtn);
     expect(getByLabelText(/username/i)).toHaveFocus();
+    expect(getByText("User has not logged in"));
   });
 
   it("should alert the user about incorrect details with an incorrect username or password", () => {
@@ -57,6 +60,7 @@ describe("LoginForm", () => {
 
     fireEvent.click(loginBtn);
     expect(alertSpy).toHaveBeenCalledWith("An error occurred when authenticating");
+    expect(getByText("User has not logged in"));
   });
 
   it("should successfully login", () => {
