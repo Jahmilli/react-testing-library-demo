@@ -16,8 +16,7 @@ describe("LoginForm", () => {
     const loginBtn = getByText(/login/i);
     fireEvent.click(loginBtn);
 
-    const usernameField = getByLabelText(/username/i);
-    expect(usernameField).toHaveFocus();
+    expect(getByLabelText(/username/i)).toHaveFocus();
   });
 
   it("should focus on password field when clicking login without a password", async () => {
