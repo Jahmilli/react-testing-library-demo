@@ -38,15 +38,8 @@ const LoginForm = () => {
     }
 
     try {
-      // Basic post request with fetch (Ideally have a generic fetch function in a separate file)
-      let response = await fetch("/api/v1/login", {
-        method: "post",
-        body: JSON.stringify(userDetails)
-      });
-
-      // Parse the json response from json into an JS object
-      let result = await response.json();
-      if (result && result.status === 200) {
+      if (userDetails.username === "username123" && 
+        userDetails.password === "secure123") {
         setUserDetails({
           ...userDetails,
           isAuthenticated: true
@@ -63,31 +56,32 @@ const LoginForm = () => {
   return (
     <div className="formLockup">
       <form className="form" onSubmit={handleSubmit}>
-        <h2 variant="h2">Login Form</h2>
+        <h2 variant="h2">Hey! Sign in here</h2>
         <div className="inputLockup">
           <label htmlFor="username">Username</label>
           <input
             ref={usernameInputRef}
             type="text" 
             id="username" 
-            className="textfield" 
+            className="textField" 
             value={userDetails.username} 
             onChange={handleChange("username")} 
             />
         </div>
         <div className="inputLockup">
           <label htmlFor="password">Password</label>
-          <input 
+          <input
+            type="password"
             ref={passwordInputRef}
             id="password"
             label="Password"
-            className="textfield"
+            className="textField"
             value={userDetails.password}
             onChange={handleChange("password")}
             />
         </div>
         <button className="button" type="submit">
-          Submit
+          Login
         </button>
       </form>
       <p variant="body1">

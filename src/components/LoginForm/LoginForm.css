@@ -7,7 +7,7 @@
 
 .inputLockup {
   display: inline-block;
-  margin: 5px 0;
+  margin: 0.5em 0;
 }
 
 .inputLockup label {
@@ -15,16 +15,24 @@
 }
 
 .textField {
-  margin-top: 2em;
-  padding-left: 1em;
-  background: none;
-  border: none;
-  border-bottom: 1px solid black;
+  padding: 5px;
+  height: 1em;
+  position: relative;
+  left: 0;
+  outline: none;
+  border: 1px solid black;
+  border-color: rgba(0,0,0,.25);
+  border-radius: 5px;
+  background-color: white;
+  font-size: 16px;
 }
 
 .button {
   margin: 1em;
+  width: 20%;
   background: none;
   padding: 5px 10px;
+  border: 1px solid black;
+  color: black;
 }
 
