@@ -13,7 +13,7 @@ describe("LoginForm", () => {
     jest.spyOn(window, "alert").mockImplementation();
 
     const { getByText, getByLabelText } = render(<LoginForm />);
-    const loginBtn = getByText(/submit/i);
+    const loginBtn = getByText(/login/i);
     fireEvent.click(loginBtn);
 
     const usernameField = getByLabelText(/username/i);
@@ -24,7 +24,7 @@ describe("LoginForm", () => {
     jest.spyOn(window, "alert").mockImplementation();
 
     const { getByText, getByDisplayValue, getByLabelText } = render(<LoginForm />);
-    const loginBtn = getByText(/submit/i);
+    const loginBtn = getByText(/login/i);
     const usernameField = getByLabelText(/username/i);
 
     fireEvent.change(usernameField, { target: { value: "stephen123" } });
@@ -39,7 +39,7 @@ describe("LoginForm", () => {
     jest.spyOn(window, "alert").mockImplementation();
 
     const { getByText, getByDisplayValue, getByLabelText } = render(<LoginForm />);
-    const loginBtn = getByText(/submit/i);
+    const loginBtn = getByText(/login/i);
     const passwordField = getByLabelText(/password/i);
     fireEvent.change(passwordField, { target: { value: "secure123" } });
     expect(getByDisplayValue("secure123"));
@@ -52,7 +52,7 @@ describe("LoginForm", () => {
     const alertSpy = jest.spyOn(window, "alert").mockImplementation();
 
     const { getByText, getByLabelText } = render(<LoginForm />);
-    const loginBtn = getByText(/submit/i);
+    const loginBtn = getByText(/login/i);
     fireEvent.change(getByLabelText(/username/i), { target: { value: "user1" } });
     fireEvent.change(getByLabelText(/password/i), { target: { value: "secure123" } });
 
@@ -64,7 +64,7 @@ describe("LoginForm", () => {
     const alertSpy = jest.spyOn(window, "alert").mockImplementation();
     const { getByText, queryByText, getByLabelText } = render(<LoginForm />);
 
-    const loginBtn = getByText(/submit/i);
+    const loginBtn = getByText(/login/i);
     fireEvent.change(getByLabelText(/username/i), { target: { value: "username123" } });
     fireEvent.change(getByLabelText(/password/i), { target: { value: "secure123" } });
 

@@ -70,7 +70,8 @@ const LoginForm = () => {
         </div>
         <div className="inputLockup">
           <label htmlFor="password">Password</label>
-          <input 
+          <input
+            type="password"
             ref={passwordInputRef}
             id="password"
             label="Password"
@@ -80,7 +81,7 @@ const LoginForm = () => {
             />
         </div>
         <button className="button" type="submit">
-          Submit
+          Login
         </button>
       </form>
       <p variant="body1">
