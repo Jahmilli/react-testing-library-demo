@@ -16,7 +16,7 @@ describe("LoginForm", () => {
     const loginBtn = getByText(/submit/i);
     fireEvent.click(loginBtn);
 
-    const usernameField = getByLabelText(/name/i);
+    const usernameField = getByLabelText(/username/i);
     expect(usernameField).toHaveFocus();
   });
 
@@ -25,7 +25,7 @@ describe("LoginForm", () => {
 
     const { getByText, getByDisplayValue, getByLabelText } = render(<LoginForm />);
     const loginBtn = getByText(/submit/i);
-    const usernameField = getByLabelText(/name/i);
+    const usernameField = getByLabelText(/username/i);
 
     fireEvent.change(usernameField, { target: { value: "stephen123" } });
     expect(getByDisplayValue("stephen123"));
@@ -45,15 +45,15 @@ describe("LoginForm", () => {
     expect(getByDisplayValue("secure123"));
 
     fireEvent.click(loginBtn);
-    expect(getByLabelText(/name/i)).toHaveFocus();
+    expect(getByLabelText(/username/i)).toHaveFocus();
   });
 
-  it.only("should alert the user about incorrect details with an incorrect username or password", () => {
-    const alertSpy = jest.spyOn(window, "alert");
+  it("should alert the user about incorrect details with an incorrect username or password", () => {
+    const alertSpy = jest.spyOn(window, "alert").mockImplementation();
 
     const { getByText, getByLabelText } = render(<LoginForm />);
     const loginBtn = getByText(/submit/i);
-    fireEvent.change(getByLabelText(/name/i), { target: { value: "user1" } });
+    fireEvent.change(getByLabelText(/username/i), { target: { value: "user1" } });
     fireEvent.change(getByLabelText(/password/i), { target: { value: "secure123" } });
 
     fireEvent.click(loginBtn);
@@ -65,7 +65,7 @@ describe("LoginForm", () => {
     const { getByText, queryByText, getByLabelText } = render(<LoginForm />);
 
     const loginBtn = getByText(/submit/i);
-    fireEvent.change(getByLabelText(/name/i), { target: { value: "username123" } });
+    fireEvent.change(getByLabelText(/username/i), { target: { value: "username123" } });
     fireEvent.change(getByLabelText(/password/i), { target: { value: "secure123" } });
 
     // Verify success text is not being displayed prior to login

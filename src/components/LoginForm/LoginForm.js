@@ -56,14 +56,14 @@ const LoginForm = () => {
   return (
     <div className="formLockup">
       <form className="form" onSubmit={handleSubmit}>
-        <h2 variant="h2">Login Form</h2>
+        <h2 variant="h2">Hey! Sign in here</h2>
         <div className="inputLockup">
           <label htmlFor="username">Username</label>
           <input
             ref={usernameInputRef}
             type="text" 
             id="username" 
-            className="textfield" 
+            className="textField" 
             value={userDetails.username} 
             onChange={handleChange("username")} 
             />
@@ -74,7 +74,7 @@ const LoginForm = () => {
             ref={passwordInputRef}
             id="password"
             label="Password"
-            className="textfield"
+            className="textField"
             value={userDetails.password}
             onChange={handleChange("password")}
             />
