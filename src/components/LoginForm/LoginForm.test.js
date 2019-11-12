@@ -10,8 +10,6 @@ describe("LoginForm", () => {
   });
 
   it("should focus on then username field when clicking login without a username or password", () => {
-    jest.spyOn(window, "alert").mockImplementation();
-
     const { getByText, getByLabelText } = render(<LoginForm />);
     const loginBtn = getByText(/login/i);
     
@@ -21,8 +19,6 @@ describe("LoginForm", () => {
   });
 
   it("should focus on password field when clicking login without a password", () => {
-    jest.spyOn(window, "alert").mockImplementation();
-
     const { getByText, getByDisplayValue, getByLabelText } = render(<LoginForm />);
     const loginBtn = getByText(/login/i);
     const usernameField = getByLabelText(/username/i);
@@ -37,8 +33,6 @@ describe("LoginForm", () => {
   });
 
   it("should focus on username field when clicking login without a username", () => {
-    jest.spyOn(window, "alert").mockImplementation();
-
     const { getByText, getByDisplayValue, getByLabelText } = render(<LoginForm />);
     const loginBtn = getByText(/login/i);
     const passwordField = getByLabelText(/password/i);
@@ -65,8 +59,8 @@ describe("LoginForm", () => {
 
   it("should successfully login", () => {
     const alertSpy = jest.spyOn(window, "alert").mockImplementation();
+    
     const { getByText, queryByText, getByLabelText } = render(<LoginForm />);
-
     const loginBtn = getByText(/login/i);
     fireEvent.change(getByLabelText(/username/i), { target: { value: "username123" } });
     fireEvent.change(getByLabelText(/password/i), { target: { value: "secure123" } });
