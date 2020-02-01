@@ -1,36 +1,58 @@
 import React from "react";
-import "./LoginForm.css"
+import { Button, TextField } from "@material-ui/core";
+import "./LoginForm.css";
 
 const LoginForm = () => {
   const usernameInputRef = React.createRef();
   const passwordInputRef = React.createRef();
-
   const [userDetails, setUserDetails] = React.useState({
-    username: "",
-    password: "",
+    username: {
+      error: false,
+      text: ""
+    },
+    password: {
+      error: false,
+      text: ""
+    },
     isAuthenticated: false
   });
 
-  const handleChange = (name) => (event) => {
+  const handleChange = name => event => {
     setUserDetails({
       ...userDetails,
-      [name]: event.target.value
+      [name]: {
+        error: false,
+        text: event.target.value
+      }
     });
-  }
+  };
+
+  const setFieldError = field => {
+    setUserDetails({
+      ...userDetails,
+      [field]: {
+        text: userDetails[field].text,
+        error: true
+      }
+    });
+  };
 
   const checkEmptyFields = () => {
-    if (userDetails.username.length === 0 && usernameInputRef) {
+    if (userDetails.username.text.length === 0) {
       usernameInputRef.current.focus();
+      setFieldError("username");
       return false;
     }
-    if (userDetails.password.length === 0 && passwordInputRef) {
+    if (userDetails.password.text.length === 0) {
+      console.log("focusing password");
       passwordInputRef.current.focus();
+      setFieldError("password");
       return false;
     }
     return true;
-  }
+  };
 
-  const handleSubmit = async (event) => {
+  const handleSubmit = async event => {
     // Prevent page from reloading on submit
     event.preventDefault();
     if (!checkEmptyFields()) {
@@ -38,8 +60,10 @@ const LoginForm = () => {
     }
 
     try {
-      if (userDetails.username === "username123" && 
-        userDetails.password === "secure123") {
+      if (
+        userDetails.username.text === "username123" &&
+        userDetails.password.text === "secure123"
+      ) {
         setUserDetails({
           ...userDetails,
           isAuthenticated: true
@@ -47,52 +71,54 @@ const LoginForm = () => {
       } else {
         throw new Error("Invalid response during authentication");
       }
-    } catch(err) {
+    } catch (err) {
       // Alert on errors when we attempt to login
       alert("An error occurred when authenticating");
     }
-  }
+  };
 
   return (
     <div className="formLockup">
-      <form className="form" onSubmit={handleSubmit}>
-        <h2 variant="h2">Hey! Sign in here</h2>
+      <form className="form" onSubmit={handleSubmit} data-testid="login-form">
+        <h2 variant="h2">Sign in</h2>
         <div className="inputLockup">
-          <label htmlFor="username">Username</label>
-          <input
-            ref={usernameInputRef}
-            type="text" 
-            id="username" 
-            className="textField" 
-            value={userDetails.username} 
-            onChange={handleChange("username")} 
-            />
+          <TextField
+            error={userDetails.username.error}
+            id="username"
+            label="Username"
+            autoFocus
+            inputRef={usernameInputRef}
+            helperText={
+              userDetails.username.error ? "Please fill in a username" : ""
+            }
+            value={userDetails.username.text}
+            onChange={handleChange("username")}
+          />
         </div>
         <div className="inputLockup">
-          <label htmlFor="password">Password</label>
-          <input
-            type="password"
-            ref={passwordInputRef}
+          <TextField
+            error={userDetails.password.error}
             id="password"
             label="Password"
-            className="textField"
-            value={userDetails.password}
+            inputRef={passwordInputRef}
+            helperText={
+              userDetails.password.error ? "Please fill in a password" : ""
+            }
+            value={userDetails.password.text}
             onChange={handleChange("password")}
-            />
+          />
         </div>
-        <button className="button" type="submit">
+        <Button type="submit" variant="contained" color="primary">
           Login
-        </button>
+        </Button>
       </form>
       <p variant="body1">
-        {
-          userDetails.isAuthenticated ?
-          "Successfully logged in"
-          : "User has not logged in"
-        }
+        {userDetails.isAuthenticated
+          ? "Successfully logged in"
+          : "User has not logged in"}
       </p>
     </div>
   );
-}
+};
 
 export default LoginForm;
