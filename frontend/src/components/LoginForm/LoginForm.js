@@ -1,6 +1,8 @@
 import React from "react";
 import { Button, TextField } from "@material-ui/core";
+// import { Link } from "react-router-dom";
 import "./LoginForm.css";
+import { login } from "../../logic/functions/login";
 
 const LoginForm = () => {
   const usernameInputRef = React.createRef();
@@ -16,6 +18,7 @@ const LoginForm = () => {
     },
     isAuthenticated: false
   });
+  const [message, setMessage] = React.useState("");
 
   const handleChange = name => event => {
     setUserDetails({
@@ -44,7 +47,6 @@ const LoginForm = () => {
       return false;
     }
     if (userDetails.password.text.length === 0) {
-      console.log("focusing password");
       passwordInputRef.current.focus();
       setFieldError("password");
       return false;
@@ -60,20 +62,19 @@ const LoginForm = () => {
     }
 
     try {
-      if (
-        userDetails.username.text === "username123" &&
-        userDetails.password.text === "secure123"
-      ) {
+      if (login(userDetails.username.text, userDetails.password.text)) {
         setUserDetails({
           ...userDetails,
           isAuthenticated: true
         });
+        setMessage("Successfully logged in");
       } else {
         throw new Error("Invalid response during authentication");
       }
     } catch (err) {
       // Alert on errors when we attempt to login
-      alert("An error occurred when authenticating");
+      // alert("An error occurred when authenticating");
+      setMessage("The username and/or password is incorrect");
     }
   };
 
@@ -100,6 +101,7 @@ const LoginForm = () => {
             error={userDetails.password.error}
             id="password"
             label="Password"
+            type="password"
             inputRef={passwordInputRef}
             helperText={
               userDetails.password.error ? "Please fill in a password" : ""
@@ -112,11 +114,8 @@ const LoginForm = () => {
           Login
         </Button>
       </form>
-      <p variant="body1">
-        {userDetails.isAuthenticated
-          ? "Successfully logged in"
-          : "User has not logged in"}
-      </p>
+      <p variant="body1">{message}</p>
+      {/* <Link to="/register">Register here</Link> */}
     </div>
   );
 };

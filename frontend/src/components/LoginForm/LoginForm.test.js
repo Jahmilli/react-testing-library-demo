@@ -1,6 +1,7 @@
 import React from "react";
 import { wait, fireEvent, render, cleanup } from "@testing-library/react";
 import "@testing-library/jest-dom/extend-expect";
+import * as login from "../../logic/functions/login";
 import LoginForm from "./LoginForm";
 
 describe("LoginForm", () => {
@@ -10,36 +11,32 @@ describe("LoginForm", () => {
   });
 
   it("should focus on then username field when clicking login without a username or password", () => {
-    const { getByText, getByLabelText } = render(<LoginForm />);
-    const loginBtn = getByText(/login/i);
+    const { getByTestId, getByLabelText } = render(<LoginForm />);
+    const loginForm = getByTestId("login-form");
 
-    fireEvent.click(loginBtn);
+    fireEvent.click(loginForm);
     expect(getByLabelText(/username/i)).toHaveFocus();
-    expect(getByText("User has not logged in"));
   });
 
   it("should focus on password field when clicking login without a password", async () => {
     const {
-      debug,
       getByTestId,
       getByText,
       getByDisplayValue,
       getByLabelText
     } = render(<LoginForm />);
-    const loginBtn = getByText(/login/i);
     const usernameField = getByLabelText(/username/i);
 
     fireEvent.change(usernameField, { target: { value: "stephen123" } });
     expect(getByDisplayValue("stephen123"));
 
     fireEvent.submit(getByTestId("login-form"));
-    debug(loginBtn);
     const passwordField = getByLabelText(/password/i);
 
     await wait();
-    debug(passwordField);
     expect(passwordField).toHaveFocus();
-    expect(getByText("User has not logged in"));
+    expect(passwordField).toHaveAttribute("type", "password");
+    expect(getByText("Please fill in a password"));
   });
 
   it("should focus on username field when clicking login without a username", () => {
@@ -49,21 +46,17 @@ describe("LoginForm", () => {
       getByDisplayValue,
       getByLabelText
     } = render(<LoginForm />);
-    const loginBtn = getByText(/login/i);
     const passwordField = getByLabelText(/password/i);
     fireEvent.change(passwordField, { target: { value: "secure123" } });
     expect(getByDisplayValue("secure123"));
 
     fireEvent.submit(getByTestId("login-form"));
     expect(getByLabelText(/username/i)).toHaveFocus();
-    expect(getByText("User has not logged in"));
+    expect(getByText("Please fill in a username"));
   });
 
   it("should alert the user about incorrect details with an incorrect username or password", () => {
-    const alertSpy = jest.spyOn(window, "alert").mockImplementation();
-
     const { getByTestId, getByText, getByLabelText } = render(<LoginForm />);
-    const loginBtn = getByText(/login/i);
     fireEvent.change(getByLabelText(/username/i), {
       target: { value: "user1" }
     });
@@ -72,19 +65,12 @@ describe("LoginForm", () => {
     });
 
     fireEvent.submit(getByTestId("login-form"));
-    expect(alertSpy).toHaveBeenCalledWith(
-      "An error occurred when authenticating"
-    );
-    expect(getByText("User has not logged in"));
+    expect(getByText("The username and/or password is incorrect"));
   });
 
   it("should successfully login", () => {
-    const alertSpy = jest.spyOn(window, "alert").mockImplementation();
-
-    const { getByTestId, getByText, queryByText, getByLabelText } = render(
-      <LoginForm />
-    );
-    const loginBtn = getByText(/login/i);
+    const loginSpy = jest.spyOn(login, "login").mockReturnValue(false);
+    const { getByTestId, queryByText, getByLabelText } = render(<LoginForm />);
     fireEvent.change(getByLabelText(/username/i), {
       target: { value: "username123" }
     });
@@ -95,7 +81,6 @@ describe("LoginForm", () => {
     // Verify success text is not being displayed prior to login
     expect(queryByText("Successfully logged in")).toBeNull();
     fireEvent.submit(getByTestId("login-form"));
-    expect(alertSpy).not.toHaveBeenCalled();
-    expect(queryByText("Successfully logged in")).not.toBeNull();
+    expect(queryByText("Successfully logged in"));
   });
 });
