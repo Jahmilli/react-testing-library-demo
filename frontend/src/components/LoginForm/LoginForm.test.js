@@ -10,11 +10,12 @@ describe("LoginForm", () => {
     cleanup();
   });
 
-  it("should alert the user to complete the username field when submitting without a username or password", () => {
+  it("should alert the user to complete the username field when submitting without a username or password", async () => {
     const { getByTestId, getByLabelText } = render(<LoginForm />);
     const loginForm = getByTestId("login-form");
 
     fireEvent.click(loginForm);
+    // await wait();
     expect(getByLabelText(/username/i)).toHaveFocus();
   });
 
@@ -33,13 +34,13 @@ describe("LoginForm", () => {
     fireEvent.submit(getByTestId("login-form"));
     const passwordField = getByLabelText(/password/i);
 
-    await wait();
+    // await wait();
     expect(passwordField).toHaveFocus();
     expect(passwordField).toHaveAttribute("type", "password");
     expect(getByText("Please fill in your password"));
   });
 
-  it("should alert the user to complete the username field when submitting without a username", () => {
+  it("should alert the user to complete the username field when submitting without a username", async () => {
     const {
       getByTestId,
       getByText,
@@ -51,11 +52,12 @@ describe("LoginForm", () => {
     expect(getByDisplayValue("secure123"));
 
     fireEvent.submit(getByTestId("login-form"));
+    // await wait();
     expect(getByLabelText(/username/i)).toHaveFocus();
     expect(getByText("Please fill in your username"));
   });
 
-  it("should alert the user about incorrect details after submitting with an incorrect username or password", () => {
+  it("should alert the user about incorrect details after submitting with an incorrect username or password", async () => {
     const { getByTestId, getByText, getByLabelText } = render(<LoginForm />);
     fireEvent.change(getByLabelText(/username/i), {
       target: { value: "user1" }
@@ -65,10 +67,11 @@ describe("LoginForm", () => {
     });
 
     fireEvent.submit(getByTestId("login-form"));
+    // await wait();
     expect(getByText("The username and/or password is incorrect"));
   });
 
-  it("should successfully login", () => {
+  it("should successfully login", async () => {
     const loginSpy = jest.spyOn(login, "login").mockReturnValue(false);
     const { getByTestId, queryByText, getByLabelText } = render(<LoginForm />);
     fireEvent.change(getByLabelText(/username/i), {
@@ -81,6 +84,7 @@ describe("LoginForm", () => {
     // Verify success text is not being displayed prior to login
     expect(queryByText("Successfully logged in")).toBeNull();
     fireEvent.submit(getByTestId("login-form"));
+    // await wait();
     expect(loginSpy).toHaveBeenCalledWith("username123", "secure123");
     expect(queryByText("Successfully logged in"));
   });

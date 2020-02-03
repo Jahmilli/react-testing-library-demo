@@ -1,15 +1,14 @@
 import React from "react";
 import { Button, TextField } from "@material-ui/core";
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from "@material-ui/core/styles";
 import "./LoginForm.css";
 import { login } from "../../logic/functions/login";
 
 const loginFormStyle = makeStyles(theme => ({
   button: {
     marginTop: "1em"
-  },
+  }
 }));
-
 
 const LoginForm = () => {
   const classes = loginFormStyle();
@@ -70,18 +69,21 @@ const LoginForm = () => {
     }
 
     try {
-      if (login(userDetails.username.text, userDetails.password.text)) {
+      const loginResult = login(
+        userDetails.username.text,
+        userDetails.password.text
+      );
+      if (loginResult) {
         setUserDetails({
           ...userDetails,
           isAuthenticated: true
         });
         setMessage("Successfully logged in");
       } else {
-        throw new Error("Invalid response during authentication");
+        throw new Error();
       }
     } catch (err) {
       // Alert on errors when we attempt to login
-      // alert("An error occurred when authenticating");
       setMessage("The username and/or password is incorrect");
     }
   };
@@ -90,33 +92,33 @@ const LoginForm = () => {
     <div className="formLockup">
       <form className="form" onSubmit={handleSubmit} data-testid="login-form">
         <h2 variant="h2">Welcome Back</h2>
-          <TextField
-            error={userDetails.username.error}
-            fullWidth
-            id="username"
-            label="Username"
-            autoFocus
-            inputRef={usernameInputRef}
-            helperText={
-              userDetails.username.error ? "Please fill in your username" : " "
-            }
-            value={userDetails.username.text}
-            onChange={handleChange("username")}
-          />
-          <TextField
-            error={userDetails.password.error}
-            fullWidth
-            id="password"
-            label="Password"
-            type="password"
-            inputRef={passwordInputRef}
-            helperText={
-              userDetails.password.error ? "Please fill in your password" : " "
-            }
-            value={userDetails.password.text}
-            onChange={handleChange("password")}
-          />
-        <Button 
+        <TextField
+          error={userDetails.username.error}
+          fullWidth
+          id="username"
+          label="Username"
+          autoFocus
+          inputRef={usernameInputRef}
+          helperText={
+            userDetails.username.error ? "Please fill in your username" : " "
+          }
+          value={userDetails.username.text}
+          onChange={handleChange("username")}
+        />
+        <TextField
+          error={userDetails.password.error}
+          fullWidth
+          id="password"
+          label="Password"
+          type="password"
+          inputRef={passwordInputRef}
+          helperText={
+            userDetails.password.error ? "Please fill in your password" : " "
+          }
+          value={userDetails.password.text}
+          onChange={handleChange("password")}
+        />
+        <Button
           className={classes.button}
           type="submit"
           variant="contained"
