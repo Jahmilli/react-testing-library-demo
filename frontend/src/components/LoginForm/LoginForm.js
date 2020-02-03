@@ -1,8 +1,15 @@
 import React from "react";
 import { Button, TextField } from "@material-ui/core";
-// import { Link } from "react-router-dom";
+import { withStyles } from '@material-ui/core/styles';
 import "./LoginForm.css";
 import { login } from "../../logic/functions/login";
+
+const style = withStyles({
+  button: {
+    marginTop: "1em"
+  },
+});
+
 
 const LoginForm = () => {
   const usernameInputRef = React.createRef();
@@ -90,7 +97,7 @@ const LoginForm = () => {
             autoFocus
             inputRef={usernameInputRef}
             helperText={
-              userDetails.username.error ? "Please fill in a username" : ""
+              userDetails.username.error ? "Please fill in a username" : " "
             }
             value={userDetails.username.text}
             onChange={handleChange("username")}
@@ -104,18 +111,17 @@ const LoginForm = () => {
             type="password"
             inputRef={passwordInputRef}
             helperText={
-              userDetails.password.error ? "Please fill in a password" : ""
+              userDetails.password.error ? "Please fill in a password" : " "
             }
             value={userDetails.password.text}
             onChange={handleChange("password")}
           />
         </div>
-        <Button type="submit" variant="contained" color="primary">
+        <Button classes={style.button} type="submit" variant="contained" color="primary">
           Login
         </Button>
       </form>
       <p variant="body1">{message}</p>
-      {/* <Link to="/register">Register here</Link> */}
     </div>
   );
 };
