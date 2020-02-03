@@ -10,7 +10,7 @@ describe("LoginForm", () => {
     cleanup();
   });
 
-  it("should focus on then username field when clicking login without a username or password", () => {
+  it("should focus on then username field when submitting without a username or password", () => {
     const { getByTestId, getByLabelText } = render(<LoginForm />);
     const loginForm = getByTestId("login-form");
 
@@ -18,7 +18,7 @@ describe("LoginForm", () => {
     expect(getByLabelText(/username/i)).toHaveFocus();
   });
 
-  it("should focus on password field when clicking login without a password", async () => {
+  it("should alert the user to complete the password field when submitting without a password", async () => {
     const {
       getByTestId,
       getByText,
@@ -39,7 +39,7 @@ describe("LoginForm", () => {
     expect(getByText("Please fill in a password"));
   });
 
-  it("should focus on username field when clicking login without a username", () => {
+  it("should alert the user to complete the username field when submitting without a username", () => {
     const {
       getByTestId,
       getByText,
@@ -55,7 +55,7 @@ describe("LoginForm", () => {
     expect(getByText("Please fill in a username"));
   });
 
-  it("should alert the user about incorrect details with an incorrect username or password", () => {
+  it("should alert the user about incorrect details after submitting with an incorrect username or password", () => {
     const { getByTestId, getByText, getByLabelText } = render(<LoginForm />);
     fireEvent.change(getByLabelText(/username/i), {
       target: { value: "user1" }
@@ -81,6 +81,7 @@ describe("LoginForm", () => {
     // Verify success text is not being displayed prior to login
     expect(queryByText("Successfully logged in")).toBeNull();
     fireEvent.submit(getByTestId("login-form"));
+    expect(loginSpy).toHaveBeenCalledWith("username123", "secure123");
     expect(queryByText("Successfully logged in"));
   });
 });
