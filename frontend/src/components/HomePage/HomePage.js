@@ -1,5 +1,6 @@
 import React from "react";
 import { getUserDetails } from "../../logic/functions/userDetails";
+import "./HomePage.css";
 
 const HomePage = () => {
   const [userDetails, setUserDetails] = React.useState({});

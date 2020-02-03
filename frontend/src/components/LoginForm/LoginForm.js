@@ -1,17 +1,18 @@
 import React from "react";
 import { Button, TextField } from "@material-ui/core";
-import { withStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import "./LoginForm.css";
 import { login } from "../../logic/functions/login";
 
-const style = withStyles({
+const loginFormStyle = makeStyles(theme => ({
   button: {
     marginTop: "1em"
   },
-});
+}));
 
 
 const LoginForm = () => {
+  const classes = loginFormStyle();
   const usernameInputRef = React.createRef();
   const passwordInputRef = React.createRef();
   const [userDetails, setUserDetails] = React.useState({
@@ -88,36 +89,40 @@ const LoginForm = () => {
   return (
     <div className="formLockup">
       <form className="form" onSubmit={handleSubmit} data-testid="login-form">
-        <h2 variant="h2">Sign in</h2>
-        <div className="inputLockup">
+        <h2 variant="h2">Welcome Back</h2>
           <TextField
             error={userDetails.username.error}
+            fullWidth
             id="username"
             label="Username"
             autoFocus
             inputRef={usernameInputRef}
             helperText={
-              userDetails.username.error ? "Please fill in a username" : " "
+              userDetails.username.error ? "Please fill in your username" : " "
             }
             value={userDetails.username.text}
             onChange={handleChange("username")}
           />
-        </div>
-        <div className="inputLockup">
           <TextField
             error={userDetails.password.error}
+            fullWidth
             id="password"
             label="Password"
             type="password"
             inputRef={passwordInputRef}
             helperText={
-              userDetails.password.error ? "Please fill in a password" : " "
+              userDetails.password.error ? "Please fill in your password" : " "
             }
             value={userDetails.password.text}
             onChange={handleChange("password")}
           />
-        </div>
-        <Button classes={style.button} type="submit" variant="contained" color="primary">
+        <Button 
+          className={classes.button}
+          type="submit"
+          variant="contained"
+          color="primary"
+          fullWidth
+        >
           Login
         </Button>
       </form>

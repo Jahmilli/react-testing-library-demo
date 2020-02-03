@@ -10,7 +10,7 @@ describe("LoginForm", () => {
     cleanup();
   });
 
-  it("should focus on then username field when submitting without a username or password", () => {
+  it("should alert the user to complete the username field when submitting without a username or password", () => {
     const { getByTestId, getByLabelText } = render(<LoginForm />);
     const loginForm = getByTestId("login-form");
 
@@ -36,7 +36,7 @@ describe("LoginForm", () => {
     await wait();
     expect(passwordField).toHaveFocus();
     expect(passwordField).toHaveAttribute("type", "password");
-    expect(getByText("Please fill in a password"));
+    expect(getByText("Please fill in your password"));
   });
 
   it("should alert the user to complete the username field when submitting without a username", () => {
@@ -52,7 +52,7 @@ describe("LoginForm", () => {
 
     fireEvent.submit(getByTestId("login-form"));
     expect(getByLabelText(/username/i)).toHaveFocus();
-    expect(getByText("Please fill in a username"));
+    expect(getByText("Please fill in your username"));
   });
 
   it("should alert the user about incorrect details after submitting with an incorrect username or password", () => {

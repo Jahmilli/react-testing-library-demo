@@ -1,13 +1,11 @@
+.formLockup {
+  padding: 0 15%;
+}
 .form {
   display: flex;
   flex-flow: column nowrap;
   align-items: center;
   font-family: sans-serif;
-}
-
-.inputLockup {
-  display: inline-block;
-  margin: 0.5em 0;
 }
 
 .inputLockup label {

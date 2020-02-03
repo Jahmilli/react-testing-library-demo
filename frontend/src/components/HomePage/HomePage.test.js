@@ -13,4 +13,11 @@ describe("HomePage", () => {
     expect(getUserDetailsMock).toHaveBeenCalled();
     expect(getByText("Welcome SebSouthern"));
   });
+
+  // it("should display the users most popular meal", () => {
+  //   const getUserDetailsMock = jest
+  //     .spyOn(userDetails, "getUserDetails")
+  //     .mockResolvedValue({ username: "SebSouthern" });
+
+  // });
 });
