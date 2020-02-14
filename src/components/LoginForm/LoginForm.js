@@ -1,36 +1,67 @@
 import React from "react";
-import "./LoginForm.css"
+import { Button, TextField } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core/styles";
+import "./LoginForm.css";
+import { login } from "../../logic/functions/login";
+
+const loginFormStyle = makeStyles(theme => ({
+  button: {
+    marginTop: "1em"
+  }
+}));
 
 const LoginForm = () => {
+  const classes = loginFormStyle();
   const usernameInputRef = React.createRef();
   const passwordInputRef = React.createRef();
-
   const [userDetails, setUserDetails] = React.useState({
-    username: "",
-    password: "",
+    username: {
+      error: false,
+      text: ""
+    },
+    password: {
+      error: false,
+      text: ""
+    },
     isAuthenticated: false
   });
+  const [message, setMessage] = React.useState("");
 
-  const handleChange = (name) => (event) => {
+  const handleChange = name => event => {
     setUserDetails({
       ...userDetails,
-      [name]: event.target.value
+      [name]: {
+        error: false,
+        text: event.target.value
+      }
     });
-  }
+  };
+
+  const setFieldError = field => {
+    setUserDetails({
+      ...userDetails,
+      [field]: {
+        text: userDetails[field].text,
+        error: true
+      }
+    });
+  };
 
   const checkEmptyFields = () => {
-    if (userDetails.username.length === 0 && usernameInputRef) {
+    if (userDetails.username.text.length === 0) {
       usernameInputRef.current.focus();
+      setFieldError("username");
       return false;
     }
-    if (userDetails.password.length === 0 && passwordInputRef) {
+    if (userDetails.password.text.length === 0) {
       passwordInputRef.current.focus();
+      setFieldError("password");
       return false;
     }
     return true;
-  }
+  };
 
-  const handleSubmit = async (event) => {
+  const handleSubmit = async event => {
     // Prevent page from reloading on submit
     event.preventDefault();
     if (!checkEmptyFields()) {
@@ -38,61 +69,68 @@ const LoginForm = () => {
     }
 
     try {
-      if (userDetails.username === "username123" && 
-        userDetails.password === "secure123") {
+      const loginResult = await login(
+        userDetails.username.text,
+        userDetails.password.text
+      );
+      if (loginResult) {
         setUserDetails({
           ...userDetails,
           isAuthenticated: true
         });
+        setMessage("Successfully logged in");
       } else {
-        throw new Error("Invalid response during authentication");
+        throw new Error();
       }
-    } catch(err) {
+    } catch (err) {
       // Alert on errors when we attempt to login
-      alert("An error occurred when authenticating");
+      setMessage("The username and/or password is incorrect");
     }
-  }
+  };
 
   return (
     <div className="formLockup">
-      <form className="form" onSubmit={handleSubmit}>
-        <h2 variant="h2">Hey! Sign in here</h2>
-        <div className="inputLockup">
-          <label htmlFor="username">Username</label>
-          <input
-            ref={usernameInputRef}
-            type="text" 
-            id="username" 
-            className="textField" 
-            value={userDetails.username} 
-            onChange={handleChange("username")} 
-            />
-        </div>
-        <div className="inputLockup">
-          <label htmlFor="password">Password</label>
-          <input
-            type="password"
-            ref={passwordInputRef}
-            id="password"
-            label="Password"
-            className="textField"
-            value={userDetails.password}
-            onChange={handleChange("password")}
-            />
-        </div>
-        <button className="button" type="submit">
+      <form className="form" onSubmit={handleSubmit} data-testid="login-form">
+        <h2 variant="h2">Welcome Back</h2>
+        <TextField
+          error={userDetails.username.error}
+          fullWidth
+          id="username"
+          label="Username"
+          autoFocus
+          inputRef={usernameInputRef}
+          helperText={
+            userDetails.username.error ? "Please fill in your username" : " "
+          }
+          value={userDetails.username.text}
+          onChange={handleChange("username")}
+        />
+        <TextField
+          error={userDetails.password.error}
+          fullWidth
+          id="password"
+          label="Password"
+          type="password"
+          inputRef={passwordInputRef}
+          helperText={
+            userDetails.password.error ? "Please fill in your password" : " "
+          }
+          value={userDetails.password.text}
+          onChange={handleChange("password")}
+        />
+        <Button
+          className={classes.button}
+          type="submit"
+          variant="contained"
+          color="primary"
+          fullWidth
+        >
           Login
-        </button>
+        </Button>
       </form>
-      <p variant="body1">
-        {
-          userDetails.isAuthenticated ?
-          "Successfully logged in"
-          : "User has not logged in"
-        }
-      </p>
+      <p variant="body1">{message}</p>
     </div>
   );
-}
+};
 
 export default LoginForm;
